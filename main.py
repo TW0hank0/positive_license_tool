@@ -24,7 +24,7 @@ def main():
     #
     for lang in config["project_lang"]:  # pyright: ignore[reportGeneralTypeIssues]
         if lang == "python":
-            print("-" * 10, "pip-licenses", "-" * 10)
+            print("-" * 10, "python (pip-licenses)", "-" * 10)
             command = [
                 "uv",
                 "run",
@@ -37,7 +37,7 @@ def main():
             ]
 
         elif lang == "rust":
-            print("-" * 10, "cargo-about", "-" * 10)
+            print("-" * 10, "rust (cargo-about)", "-" * 10)
             command = [
                 "cargo-about",
                 "generate",
@@ -59,11 +59,8 @@ def main():
             timeout=120,
         )
     if config["enable_addlicense"] is True:
-        command = [
-            "addlicense",
-            "-check",
-            "-f",
-            "addlicense.template",
+        print("license check (addlicense)")
+        ignores = [
             "-ignore",
             "**/.git/**",
             "-ignore",
@@ -106,18 +103,35 @@ def main():
             "positive_license_tool/**",  # positive_license_tool
             "-ignore",
             "**/.python-version",  # uv python's version
+        ]
+        command = [
+            "addlicense",
+            "-check",
+            "-f",
+            "addlicense.template",
             ".",
         ]
+        command.extend(ignores.copy())
         print(" ".join(command))
         print("-" * 10)
-        subprocess.run(
+        process = subprocess.run(
             command,
-            check=True,
+            # check=True,
             stdout=sys.stdout,
             stdin=sys.stdin,
             stderr=sys.stderr,
             timeout=90,
         )
+        if process.returncode != 0:
+            print("包含無license 標記的檔案！")
+            format_command = [
+                "addlicense",
+                "-f",
+                "addlicense.template",
+                ".",
+            ]
+            format_command.extend(ignores.copy())
+            print(f"命令：\n{format_command}")
     #
     print("完成！")
     end_time = time.time()
