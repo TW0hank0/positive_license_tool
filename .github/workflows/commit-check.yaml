@@ -61,7 +61,7 @@ jobs:
       - name: Install addlicense
         run: go install github.com/google/addlicense@latest
 
-      - name: run PTL
+      - name: run PLT
         run: |
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-          uv run positive_license_tool/main.py
+          uv run main.py

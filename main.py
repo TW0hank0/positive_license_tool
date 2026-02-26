@@ -13,6 +13,9 @@ config_type = dict[
 
 
 def main():
+    #
+    check_dir = sys.argv[1] if len(sys.argv) > 1 else "."
+    #
     config_filepath = os.path.join(
         (os.path.dirname(__file__)), "ptl_config.json"
     )
@@ -98,9 +101,9 @@ def main():
             "-ignore",
             "**/*.icon",
             "-ignore",
-            "**/rustup-init.sh",  # Rustup
+            "**/rustup-init.sh",  # Rustup (Linux)
             "-ignore",
-            "**/rustup-init.exe",  # Rustup
+            "**/rustup-init.exe",  # Rustup (Windows)
             "-ignore",
             "positive_license_tool/**",  # positive_license_tool
             "-ignore",
