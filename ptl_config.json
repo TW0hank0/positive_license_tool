@@ -2,5 +2,6 @@
     "project_lang": [
         "python"
     ],
-    "enable_addlicense": true
+    "enable_addlicense": true,
+    "enable_python_licensecheck": true
 }

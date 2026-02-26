@@ -1,3 +1,18 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# 著作權所有 (C) 2026 TW0hank0
+#
+# 本檔案屬於 positive_toolbox 專案的一部分。
+# 專案儲存庫：https://github.com/TW0hank0/positive_toolbox
+#
+# 本程式為自由軟體：您可以根據自由軟體基金會發佈的 GNU Affero 通用公共授權條款
+# 第 3 版（僅此版本）重新發佈及/或修改本程式。
+#
+# 本程式的發佈是希望它能發揮功用，但不提供任何擔保；
+# 甚至沒有隱含的適銷性或特定目的適用性擔保。詳見 GNU Affero 通用公共授權條款。
+#
+# 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
+# 如果沒有，請參見 <https://www.gnu.org/licenses/>。
+
 import os
 import json
 import subprocess
@@ -7,14 +22,24 @@ import time
 from typing import Literal, Union
 
 config_type = dict[
-    Union[Literal["project_lang", "enable_addlicense"]],
+    Union[
+        Literal[
+            "project_lang",
+            "enable_addlicense",
+            "enable_python_licensecheck",
+        ]
+    ],
     Union[list[Union[Literal["python", "rust"], str]], bool],
 ]
 
 
 def main():
     #
-    check_dir = sys.argv[1] if len(sys.argv) > 1 else "."
+    check_dir = (
+        sys.argv[1]
+        if len(sys.argv) > 1
+        else os.path.dirname(os.path.dirname(__file__))
+    )
     #
     config_filepath = os.path.join(
         (os.path.dirname(__file__)), "ptl_config.json"
@@ -27,18 +52,21 @@ def main():
     #
     for lang in config["project_lang"]:  # pyright: ignore[reportGeneralTypeIssues]
         if lang == "python":
-            print("-" * 10, "python (pip-licenses)", "-" * 10)
-            command = [
-                "uv",
-                "run",
-                "pip-licenses",
-                "--format=html",
-                "--output-file",
-                "ThirdPartyLicense-Python.html",
-                "--from=mixed",
-                "--with-urls",
-            ]
-
+            if config["enable_python_licensecheck"] is True:
+                print("-" * 10, "python (licensecheck)", "-" * 10)
+                command = ["uv", "run", "licensecheck"]
+            else:
+                print("-" * 10, "python (pip-licenses)", "-" * 10)
+                command = [
+                    "uv",
+                    "run",
+                    "pip-licenses",
+                    "--format=html",
+                    "--output-file",
+                    "ThirdPartyLicense-Python.html",
+                    "--from=mixed",
+                    "--with-urls",
+                ]
         elif lang == "rust":
             print("-" * 10, "rust (cargo-about)", "-" * 10)
             command = [
@@ -62,7 +90,7 @@ def main():
             timeout=120,
         )
     if config["enable_addlicense"] is True:
-        print("license check (addlicense)")
+        print("-" * 10, "license check (addlicense)", "-" * 10)
         ignores = [
             "-ignore",
             "**/.git/**",
@@ -107,16 +135,16 @@ def main():
             "-ignore",
             "positive_license_tool/**",  # positive_license_tool
             "-ignore",
-            "**/.python-version",  # uv python's version
+            ".python-version",  # uv python's version
         ]
         command = [
             "addlicense",
             "-check",
             "-f",
             "addlicense.template",
-            ".",
         ]
         command.extend(ignores.copy())
+        command.append(check_dir)
         print(" ".join(command))
         print("-" * 10)
         process = subprocess.run(
@@ -128,19 +156,19 @@ def main():
             timeout=90,
         )
         if process.returncode != 0:
-            print("包含無license 標記的檔案！")
+            print("包含無license 標記的檔案或其他錯誤！")
             format_command = [
                 "addlicense",
                 "-f",
                 "addlicense.template",
-                ".",
             ]
             format_command.extend(ignores.copy())
-            print(f"命令：\n{format_command}")
+            format_command.append(check_dir)
+            print(f"命令：\n{' '.join(format_command)}")
     #
     print("完成！")
     end_time = time.time()
-    print(f"花了：{str(end_time - start_time)}")
+    print(f"花了：{str(end_time - start_time)} 秒")
 
 
 if __name__ == "__main__":

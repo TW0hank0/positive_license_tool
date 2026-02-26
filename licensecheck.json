@@ -1,0 +1,22 @@
+{
+    "tool": {
+        "licensecheck": {
+            "extras": [],
+            "fail_licenses": [],
+            "fail_packages": [],
+            "file": "ThirdPartyLicense-Python.html",
+            "format": "html",
+            "groups": [],
+            "hide_output_parameters": [],
+            "ignore_licenses": [],
+            "ignore_packages": [],
+            "license": "AGPL-3.0-only",
+            "only_licenses": [],
+            "pypi_api": "https://pypi.org",
+            "requirements_paths": [],
+            "show_only_failing": false,
+            "skip_dependencies": [],
+            "zero": false
+        }
+    }
+}
