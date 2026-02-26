@@ -42,7 +42,10 @@ def main():
     )
     #
     config_filepath = os.path.join(
-        (os.path.dirname(__file__)), "ptl_config.json"
+        os.path.dirname(__file__)
+        if len(sys.argv) > 1
+        else os.path.dirname(os.path.dirname(__file__)),
+        "ptl_config.json",
     )
     with open(config_filepath, "r", encoding="utf-8") as f:
         config: config_type = json.load(f)
