@@ -48,7 +48,7 @@ def main():
         config: config_type = json.load(f)
     #
     start_time = time.time()
-    print("Start！")
+    print("Start!")
     #
     for lang in config["project_lang"]:  # pyright: ignore[reportGeneralTypeIssues]
         if lang == "python":
@@ -166,7 +166,7 @@ def main():
             format_command.append(check_dir)
             print(f"命令：\n{' '.join(format_command)}")
     #
-    print("Finish！")
+    print("Finish!")
     end_time = time.time()
     print(f"{str(end_time - start_time)} Secs")
 
