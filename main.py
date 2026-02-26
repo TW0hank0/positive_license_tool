@@ -98,7 +98,9 @@ def main():
             "-ignore",
             "**/*.icon",
             "-ignore",
-            "**/*.sh",
+            "**/rustup-init.sh",  # Rustup
+            "-ignore",
+            "**/rustup-init.exe",  # Rustup
             "-ignore",
             "positive_license_tool/**",  # positive_license_tool
             "-ignore",

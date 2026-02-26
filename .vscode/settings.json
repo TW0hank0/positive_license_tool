@@ -1,6 +1,1 @@
-{
-    "yaml.schemas": {
-        "file:///c%3A/Users/hank/.vscode/extensions/docsmsft.docs-yaml-1.0.6/dist/toc.schema.json": "/toc\\.yml/i",
-        "https://www.schemastore.org/github-workflow.json": "file:///d%3A/D/code/positive_license_tool/templates/commit-ptl.yaml"
-    }
-}
+{}

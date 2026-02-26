@@ -30,8 +30,8 @@ jobs:
       - name: install rustup (Linux)
         if: runner.os == 'Linux'
         run: |
-          curl https://sh.rustup.rs -o rust-init.sh
-          sh rust-init.sh -y
+          curl https://sh.rustup.rs -o rustup-init.sh
+          sh rustup-init.sh -y
 
       - name: check Install
         run: |
