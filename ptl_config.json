@@ -3,5 +3,6 @@
         "python"
     ],
     "enable_addlicense": true,
-    "enable_python_licensecheck": true
+    "enable_python_licensecheck": true,
+    "enable_cargo_about_json": true
 }

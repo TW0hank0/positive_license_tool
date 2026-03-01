@@ -27,6 +27,7 @@ config_type = dict[
             "project_lang",
             "enable_addlicense",
             "enable_python_licensecheck",
+            "enable_cargo_about_json",
         ]
     ],
     Union[list[Union[Literal["python", "rust"], str]], bool],
@@ -77,10 +78,20 @@ def main():
                 "generate",
                 "--output-file",
                 "ThirdPartyLicense-Rust.html",
-                "about.hbs",
+                "about_html.hbs",
                 "--threshold",
                 "1.0",
             ]
+            if config["enable_cargo_about_json"] is True:
+                command = [
+                    "cargo-about",
+                    "generate",
+                    "--output-file",
+                    "src/license_rust.json",
+                    "about_json.hbs",
+                    "--threshold",
+                    "1.0",
+                ]
         else:
             print(f"錯誤！不支援的語言：{lang}")
             continue
